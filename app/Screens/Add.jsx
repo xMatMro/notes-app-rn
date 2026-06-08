@@ -7,23 +7,23 @@ import MyButton from '../components/MyButton';
 
 
 const Add = ({ navigation }) => {
-
     const [title, setTitle] = useState("")
     const [notes, setNotes] = useState("")
     const [picker, setPicker] = useState(0)
     const [categories, setCategories] = useState([])
     const save = async () => {
         let temp = await SecureStore.getItemAsync("keys");
-        console.log('h')
 
         let keys = temp ? JSON.parse(temp) : [];
-        console.log('f')
         keys.push(title);
-        console.log('d')
+        let date = new Date()
+        
         const fullNote = JSON.stringify(
             {
                 notes,
-                category: picker
+                category: picker,
+                date: date.toISOString().split('T')[0],
+                timestamp: date.getTime().toString()
             }
         )
         await SecureStore.setItemAsync(title, fullNote);
@@ -61,11 +61,11 @@ const Add = ({ navigation }) => {
                 placeholder='Notatki'
             />
             <Text style={styles.text}>Wybierz kategorię</Text>
-            <View style={{borderWidth:2,borderColor:'black',borderStyle:'solid',margin:10,borderRadius:50,paddingHorizontal:10,backgroundColor:'#ccf6ff'}}>
+            <View style={{ borderWidth: 2, borderColor: 'black', borderStyle: 'solid', margin: 10, borderRadius: 50, paddingHorizontal: 10, backgroundColor: '#ccf6ff' }}>
                 <Picker
                     selectedValue={picker}
                     onValueChange={(e, i) => setPicker(e)}
-                    style={{ height: 55, minWidth: 140 }}
+                    style={{ height: 60, minWidth: 140 }}
                 >
                     {
                         categories.map((e, i) => (
@@ -75,7 +75,7 @@ const Add = ({ navigation }) => {
                 </Picker>
             </View>
 
-            <MyButton text='Zapisz' background='#ccf6ff' fun={save} textColor='black'/>
+            <MyButton text='Zapisz' background='#ccf6ff' fun={save} textColor='black' />
         </View>
     )
 }
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         padding: 15,
-        gap:8
+        gap: 8
     },
     input: {
         borderColor: 'black',
@@ -99,10 +99,10 @@ const styles = StyleSheet.create({
         width: 160,
         borderRadius: 50,
         padding: 15,
-        width:'65%'
+        width: '65%'
     },
     text: {
         color: 'black',
-        fontSize:16
+        fontSize: 16
     }
 })

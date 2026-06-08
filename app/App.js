@@ -18,6 +18,7 @@ import AddCategory from './Screens/AddCategory';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Settings from './Screens/Settings';
 import Backup from './Screens/Backup';
+import CalendarScreen from './Screens/CalendarScreen';
 
 const Drawer = createDrawerNavigator({
   screens: {
@@ -55,6 +56,11 @@ function CustomDrawerContent(props) {
           label="BackUp"
           icon={() => <MaterialIcons name="backup" size={24} color="#926ac6" />}
           onPress={() => props.navigation.navigate("BackUp")}
+        />
+        <DrawerItem
+          label="Kalendarz"
+          icon={() => <Ionicons name="calendar" size={24} color="#ff85de" />}
+          onPress={() => props.navigation.navigate("Calendar")}
         />
         <DrawerItem
           label="Ustawienia"
@@ -151,6 +157,14 @@ export default function App() {
           }} />
           <Drawer.Screen name="BackUp" component={Backup} options={{
             title: "Zrób BackUp",
+            drawerItemStyle: { display: 'none' },
+            headerStyle: {
+              backgroundColor: '#00bafa'
+            },
+            headerTintColor: "#ffffff"
+          }} />
+          <Drawer.Screen name="Calendar" component={CalendarScreen} options={{
+            title: "Kalendarz",
             drawerItemStyle: { display: 'none' },
             headerStyle: {
               backgroundColor: '#00bafa'

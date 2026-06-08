@@ -23,7 +23,7 @@ const getTasks = async () => {
 }
 
 const saveNotes = async(items)=>{
-    await collection.remove({})
+    await collection.deleteMany({})
     await collection.insertMany(items)
     console.log("saved");
     

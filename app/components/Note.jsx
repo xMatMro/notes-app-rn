@@ -9,11 +9,11 @@ const Note = ({ title, onDelete, navigation }) => {
   useEffect(() => {
     const getNote = async () => {
       const temp = await SecureStore.getItemAsync(title);
-      const categoryTemp = await SecureStore.getItemAsync('category')
-      const categoryTab = JSON.parse(categoryTemp)
-      let tab = JSON.parse(temp)
-      setNote(tab.notes)
-      setOpt(categoryTab[tab.category])
+      const categoryTemp = await SecureStore.getItemAsync('category');
+      const categoryTab = categoryTemp ? JSON.parse(categoryTemp) : [];
+      const tab = temp ? JSON.parse(temp) : { notes: '', category: null };
+      setNote(tab.notes || '');
+      setOpt(categoryTab[tab.category] || 'Ogólne');
     };
 
     getNote();

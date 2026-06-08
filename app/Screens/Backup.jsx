@@ -56,29 +56,31 @@ const Backup = ({ navigation }) => {
     })
   }
   const get = async () => {
+
     const items = await fetch('http://' + ip + ':' + port + '/api/get').then(res => res.json())
     let keys = await SecureStore.getItemAsync('keys')
     keys = JSON.parse(keys)
-    keys.forEach(async(key) => {
+    keys.forEach(async (key) => {
       await SecureStore.deleteItemAsync(key)
     });
     keys = []
-    keys = items.map(e=>{
+    keys = items.map(e => {
       return e.title
     })
-    console.log(keys)
-    await SecureStore.setItemAsync('keys',JSON.stringify(keys))
-    items.forEach(async(item)=>{
-      await SecureStore.setItemAsync(item.title,JSON.stringify({notes:item.note,category:item.category}))
+    await SecureStore.setItemAsync('keys', JSON.stringify(keys))
+    items.forEach(async (item) => {
+      await SecureStore.setItemAsync(item.title, JSON.stringify({ notes: item.note, category: item.category }))
     })
-    navigation.navigate('Notes',{
-      refresh:true
+    navigation.navigate('Notes', {
+      refresh: true
     })
   }
   return (
-    <View style={styles.container}>
-      <MyButton text='Zrób BackUp' background='#00e2da' fun={save} textColor={'white'}/>
-      <MyButton text='Wczytaj BackUp' background='#00e2da' fun={get} textColor={'white'}/>
+    <View style={{flex:1,backgroundColor:'#fff'}}>
+      <View style={styles.container}>
+        <MyButton text='Zrób BackUp' background='#00e2da' fun={save} textColor={'white'} />
+        <MyButton text='Wczytaj BackUp' background='#00e2da' fun={get} textColor={'white'} />
+      </View>
     </View>
   )
 }
@@ -87,9 +89,10 @@ export default Backup
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 0,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    padding: 15
+    alignItems: 'start',
+    padding: 15,
+    flexDirection: 'row'
   }
 })
