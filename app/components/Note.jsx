@@ -5,25 +5,27 @@ import * as SecureStore from 'expo-secure-store';
 const Note = ({ title, onDelete, navigation }) => {
   const [note, setNote] = useState("");
   const [opt, setOpt] = useState();
+  const [noteColor, setNoteColor] = useState('#7188e3');
 
   useEffect(() => {
     const getNote = async () => {
       const temp = await SecureStore.getItemAsync(title);
       const categoryTemp = await SecureStore.getItemAsync('category');
       const categoryTab = categoryTemp ? JSON.parse(categoryTemp) : [];
-      const tab = temp ? JSON.parse(temp) : { notes: '', category: null };
+      const tab = temp ? JSON.parse(temp) : { notes: '', category: null, color: '#7188e3' };
       setNote(tab.notes || '');
       setOpt(categoryTab[tab.category] || 'Ogólne');
+      setNoteColor(tab.color || '#7188e3');
     };
 
     getNote();
   }, [title]);
 
   return (
-    <TouchableOpacity onLongPress={onDelete} style={styles.note} onPress={_ => navigation.navigate("Edit", {
+    <TouchableOpacity onLongPress={onDelete} style={[styles.note, { backgroundColor: noteColor[0], borderColor: noteColor[1] }]} onPress={_ => navigation.navigate("Edit", {
       title: title
     })}>
-      <View style={styles.optView}>
+      <View style={[styles.optView, { backgroundColor: noteColor[1], borderColor: noteColor[2] }] }>
         <Text style={{ color: 'white', textAlign: 'center', borderRadius: 15 }}>{opt}</Text>
       </View>
       <Text style={[styles.text,{fontWeight:'bold',fontSize:17}]}>Tytuł: {title}</Text>
@@ -36,7 +38,7 @@ export default Note
 const styles = StyleSheet.create({
   note: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'start',
     alignItems: 'center',
     borderRadius: 15,
     backgroundColor: '#7188e3',

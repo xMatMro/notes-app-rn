@@ -71,7 +71,7 @@ function CustomDrawerContent(props) {
         <DrawerItem
           label="Info"
           icon={() => <MaterialIcons name="info" size={24} color="#46a2f4" />}
-          onPress={() => Alert.alert('Info', 'Notes app v1.3.0', [
+          onPress={() => Alert.alert('Info', 'Notes app v4.0.0', [
             {
               text: 'OK',
               onPress: () => { }

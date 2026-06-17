@@ -1,18 +1,30 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity,TextInput } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity,TextInput, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import * as SecureStore from 'expo-secure-store';
 import MyButton from '../components/MyButton';
 
 export default function AddCategory({navigation}) {
 
-    const [newCategory,setNewCategory] = useState()
+    const [newCategory,setNewCategory] = useState('')
     const addCategory = async()=>{
         const temp = await SecureStore.getItemAsync('category')
         const categories = JSON.parse(temp)
-        categories.push(newCategory)
-        await SecureStore.setItemAsync('category',JSON.stringify(categories))
-        navigation.navigate('Notes')
+        if(newCategory != '' && !categories.includes(newCategory)){
+            categories.push(newCategory)
+            await SecureStore.setItemAsync('category',JSON.stringify(categories))
+            navigation.navigate('Notes')
+        }
+        else{
+            Alert.alert('Błąd','Kategoria jest pusta lub już istnieje',[
+                {
+                    text:'OK',
+                    onPress: () => {navigation.navigate('Notes')},
+                    style:'default'
+                }
+            ])
+        }
+
     }
     return (
         <View style={styles.container}>

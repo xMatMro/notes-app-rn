@@ -7,21 +7,38 @@ import MyButton from '../components/MyButton';
 
 
 const Add = ({ navigation }) => {
+    const colorPalettes = [
+        ['#7188e3', '#5b75d5', '#4a98f0'],
+        ['#ff85de', '#d764c3', '#bf4aab'],
+        ['#47c4a3', '#37ab8d', '#2b9274'],
+        ['#ffd25b', '#f4b83b', '#d79932'],
+        ['#ff9c76', '#f17b52', '#d15f3f'],
+        ['#8f7efa', '#6d63e2', '#544db9']
+    ];
     const [title, setTitle] = useState("")
     const [notes, setNotes] = useState("")
     const [picker, setPicker] = useState(0)
     const [categories, setCategories] = useState([])
+
+    const getRandomColor = (categoryIndex) => {
+        const palette = categories && categories.length > 0
+            ? colorPalettes[categoryIndex % colorPalettes.length] || colorPalettes.flat()
+            : colorPalettes.flat();
+        return palette;
+    };
+
     const save = async () => {
         let temp = await SecureStore.getItemAsync("keys");
 
         let keys = temp ? JSON.parse(temp) : [];
         keys.push(title);
         let date = new Date()
-        
+        const color = getRandomColor(picker)
         const fullNote = JSON.stringify(
             {
                 notes,
                 category: picker,
+                color,
                 date: date.toISOString().split('T')[0],
                 timestamp: date.getTime().toString()
             }

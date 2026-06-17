@@ -10,6 +10,9 @@ const Edit = ({ navigation, route }) => {
   const [newTitle, setNewTitle] = useState()
   const [note, setNote] = useState()
   const [picker, setPicker] = useState(0)
+  const [color, setColor] = useState('#7188e3')
+  const [date, setDate] = useState('')
+  const [timestamp, setTimestamp] = useState('')
   useEffect(() => {
     const loadData = async () => {
       const categoryTemp = await SecureStore.getItemAsync('category')
@@ -19,6 +22,9 @@ const Edit = ({ navigation, route }) => {
       setNote(noteLoaded.notes)
       setPicker(noteLoaded.category)
       setNewTitle(title)
+      setColor(noteLoaded.color || '#7188e3')
+      setDate(noteLoaded.date || '')
+      setTimestamp(noteLoaded.timestamp || new Date().getTime().toString())
     }
     loadData()
   }, [title])
@@ -31,7 +37,10 @@ const Edit = ({ navigation, route }) => {
     const fullNote = JSON.stringify(
       {
         notes: note,
-        category: picker
+        category: picker,
+        color,
+        date,
+        timestamp
       }
 
     )

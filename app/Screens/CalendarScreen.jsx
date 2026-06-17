@@ -26,6 +26,18 @@ LocaleConfig.locales['pl'] = {
 LocaleConfig.defaultLocale = 'pl';
 
 const CalendarScreen = ({ navigation }) => {
+    const colorPalettes = [
+        ['#7188e3', '#5b75d5', '#4a98f0'],
+        ['#ff85de', '#d764c3', '#bf4aab'],
+        ['#47c4a3', '#37ab8d', '#2b9274'],
+        ['#ffd25b', '#f4b83b', '#d79932'],
+        ['#ff9c76', '#f17b52', '#d15f3f'],
+        ['#8f7efa', '#6d63e2', '#544db9']
+    ];
+    const getRandomColor = (categoryIndex) => {
+        const palette = colorPalettes[categoryIndex % colorPalettes.length] || colorPalettes.flat()
+        return palette;
+    };
     const [allNotes, setAllNotes] = useState([]);
     const [markedDates, setMarkedDates] = useState({});
     const [selectedDate, setSelectedDate] = useState('');
@@ -128,16 +140,17 @@ const CalendarScreen = ({ navigation }) => {
             const savePromises = [];
 
             for (let i = 0; i < 10; i++) {
-                console.log(`Generuje notatkę ${i + 1}`);
 
                 const { date, timestamp } = getRandomDateLastWeek();
                 const baseTitle = `Losowa notatka_${i + 1}_${timestamp}`;
                 let title = makeUniqueTitle(baseTitle, keys);
                 title = title.replace(/\s+/g, '_')
+                const color = getRandomColor(0)
                 const noteObject = {
                     notes: `Przykładowa notatka stworzona automatycznie dla daty ${date}.`,
                     category: 0,
                     date,
+                    color,
                     timestamp,
                 };
 
@@ -147,7 +160,6 @@ const CalendarScreen = ({ navigation }) => {
                 savePromises.push(promise);
             }
 
-            console.log('Zapisywanie wszystkich notatek do pamięci...');
 
             await Promise.all(savePromises);
 

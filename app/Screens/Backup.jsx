@@ -25,7 +25,10 @@ const Backup = ({ navigation }) => {
       tempNote = JSON.parse(tempNote)
       const note = tempNote.notes
       const category = tempNote.category
-      return { title: e, note: note, category: category }
+      const color = tempNote.color
+      const date = tempNote.date
+      const timestamp = tempNote.timestamp
+      return { title: e, note: note, category: category, color, date, timestamp }
 
     }))
     await fetch('http://' + ip + ':' + port + '/api/save', {
@@ -69,7 +72,13 @@ const Backup = ({ navigation }) => {
     })
     await SecureStore.setItemAsync('keys', JSON.stringify(keys))
     items.forEach(async (item) => {
-      await SecureStore.setItemAsync(item.title, JSON.stringify({ notes: item.note, category: item.category }))
+      await SecureStore.setItemAsync(item.title, JSON.stringify({
+        notes: item.note,
+        category: item.category,
+        color: item.color || '#7188e3',
+        date: item.date || '',
+        timestamp: item.timestamp || new Date().getTime().toString()
+      }))
     })
     navigation.navigate('Notes', {
       refresh: true
